@@ -1,13 +1,19 @@
 package com.tong.springbootmall.dao.impl;
 
 import com.tong.springbootmall.dao.ProductDao;
+import com.tong.springbootmall.dto.ProductRequest;
 import com.tong.springbootmall.model.Product;
 import com.tong.springbootmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import javax.crypto.KeyGenerator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,5 +34,31 @@ public class ProductDaoImpl implements ProductDao {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Integer createProduct(ProductRequest productRequest) {
+        String sql = "INSERT INTO product (product_name, category, image_url, price, stock," +
+                " description, created_date, last_modified_date)\n" +
+                "VALUES (:productName, :category, :imageUrl, :price, :stock," +
+                " :description, :createdDate, :lastModifiedDate);";
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("productName", productRequest.getProductName());
+        // 這邊記得一定要把 enum 轉成 String
+        map.put("category", productRequest.getCategory().toString());
+        map.put("imageUrl", productRequest.getImageUrl());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+
+        // 時間由Spring boot 程式產生，而非由前端資訊所決定
+        Date now = new Date();
+        map.put("createdDate", now);
+        map.put("lastModifiedDate", now);
+
+        //使用 auto increment id 時的設定
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
+        return keyHolder.getKey().intValue();
     }
 }

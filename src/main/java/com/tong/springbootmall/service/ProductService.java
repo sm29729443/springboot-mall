@@ -1,5 +1,6 @@
 package com.tong.springbootmall.service;
 
+import com.tong.springbootmall.dto.ProductRequest;
 import com.tong.springbootmall.model.Product;
 
 /**
@@ -8,4 +9,6 @@ import com.tong.springbootmall.model.Product;
  */
 public interface ProductService {
     public Product getProductById(Integer productId);
+
+    public Integer createProduct(ProductRequest productRequest);
 }
