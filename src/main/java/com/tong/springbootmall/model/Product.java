@@ -1,4 +1,5 @@
 package com.tong.springbootmall.model;
+import com.tong.springbootmall.constants.ProductCategory;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Date;
 public class Product {
     private Integer productId;
     private String productName;
-    private String category;
+    private ProductCategory category;
     private String imageUrl;
     private Integer price;
     private Integer stock;
