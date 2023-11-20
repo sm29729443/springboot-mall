@@ -1,6 +1,7 @@
 package com.tong.springbootmall.controller;
 import com.tong.springbootmall.model.Product;
 import com.tong.springbootmall.service.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Package: com.tong.springbootmall.controller
  */
 @RestController
+@Slf4j
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -20,6 +22,7 @@ public class ProductController {
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
         Product product = productService.getProductById(productId);
+        log.info("Time:{}",product.getCreatedDate());
         if(product != null){
         return ResponseEntity.status(HttpStatus.OK).body(product);
         }
