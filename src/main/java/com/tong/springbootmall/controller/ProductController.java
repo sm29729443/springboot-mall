@@ -54,6 +54,15 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(updateProduct);
     }
 
+    //刪除商品
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
+        // 影片是說前端只在意商品最後是否存在，所以不管是一開始就不存在，還是被刪除後不存在意義都一樣
+        // 因此不用先檢查此商品事先是否存在
+        productService.deleteProduct(productId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 
 
 }
