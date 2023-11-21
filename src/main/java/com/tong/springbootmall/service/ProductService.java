@@ -3,6 +3,8 @@ package com.tong.springbootmall.service;
 import com.tong.springbootmall.dto.ProductRequest;
 import com.tong.springbootmall.model.Product;
 
+import java.util.List;
+
 /**
  * ClassName: ProductService
  * Package: com.tong.springbootmall.service
@@ -15,4 +17,6 @@ public interface ProductService {
     public void updateProduct(Integer productId, ProductRequest productRequest);
 
     public void deleteProduct(Integer productId);
+
+    public List<Product> getProducts();
 }

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ClassName: ProductController
@@ -61,6 +63,14 @@ public class ProductController {
         // 因此不用先檢查此商品事先是否存在
         productService.deleteProduct(productId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    //查詢商品列表
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts() {
+        // 不用檢查 List 是否為空，教學是說與 Restful API對於 url 的資源定義有關，但我聽不太懂
+        List<Product> products = productService.getProducts();
+        return ResponseEntity.status(HttpStatus.OK).body(products);
     }
 
 
