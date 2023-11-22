@@ -70,12 +70,20 @@ public class ProductController {
     //查詢商品列表
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
+            // 查詢條件 Filtering
             @RequestParam(required = false) ProductCategory productCategory,
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+
+            // 排序條件 Sorting
+            // 默認以商品建立時間來做降序。reason:一般情況下總是希望最新的商品在最前面
+            @RequestParam(defaultValue = "created_date") String orderBy,
+            @RequestParam(defaultValue = "DESC") String sort
             ) {
         ProductQueryParams params = new ProductQueryParams();
         params.setProductCategory(productCategory);
         params.setSearch(search);
+        params.setOrderBy(orderBy);
+        params.setSort(sort);
         // 不用檢查 List 是否為空，教學是說與 Restful API對於 url 的資源定義有關，但我聽不太懂
         List<Product> products = productService.getProducts(params);
         return ResponseEntity.status(HttpStatus.OK).body(products);
