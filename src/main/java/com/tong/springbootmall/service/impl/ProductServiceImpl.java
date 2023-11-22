@@ -1,5 +1,6 @@
 package com.tong.springbootmall.service.impl;
 
+import com.tong.springbootmall.constants.ProductCategory;
 import com.tong.springbootmall.dao.ProductDao;
 import com.tong.springbootmall.dao.impl.ProductDaoImpl;
 import com.tong.springbootmall.dto.ProductRequest;
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductCategory productCategory, String search) {
+        return productDao.getProducts(productCategory, search);
     }
 }

@@ -1,4 +1,5 @@
 package com.tong.springbootmall.dao;
+import com.tong.springbootmall.constants.ProductCategory;
 import com.tong.springbootmall.dto.ProductRequest;
 import com.tong.springbootmall.model.Product;
 
@@ -13,5 +14,5 @@ public interface ProductDao {
     public void deleteProduct(Integer productId);
 
 
-    List<Product> getProducts();
+    List<Product> getProducts(ProductCategory productCategory, String search);
 }

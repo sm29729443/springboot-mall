@@ -1,4 +1,5 @@
 package com.tong.springbootmall.controller;
+import com.tong.springbootmall.constants.ProductCategory;
 import com.tong.springbootmall.dto.ProductRequest;
 import com.tong.springbootmall.model.Product;
 import com.tong.springbootmall.service.ProductService;
@@ -67,9 +68,12 @@ public class ProductController {
 
     //查詢商品列表
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory productCategory,
+            @RequestParam(required = false) String search
+            ) {
         // 不用檢查 List 是否為空，教學是說與 Restful API對於 url 的資源定義有關，但我聽不太懂
-        List<Product> products = productService.getProducts();
+        List<Product> products = productService.getProducts(productCategory, search);
         return ResponseEntity.status(HttpStatus.OK).body(products);
     }
 
