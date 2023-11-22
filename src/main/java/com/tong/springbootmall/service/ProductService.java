@@ -1,6 +1,7 @@
 package com.tong.springbootmall.service;
 
 import com.tong.springbootmall.constants.ProductCategory;
+import com.tong.springbootmall.dto.ProductQueryParams;
 import com.tong.springbootmall.dto.ProductRequest;
 import com.tong.springbootmall.model.Product;
 
@@ -19,5 +20,5 @@ public interface ProductService {
 
     public void deleteProduct(Integer productId);
 
-    public List<Product> getProducts(ProductCategory productCategory, String search);
+    public List<Product> getProducts(ProductQueryParams params);
 }
