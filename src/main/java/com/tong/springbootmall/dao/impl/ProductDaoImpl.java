@@ -127,4 +127,21 @@ public class ProductDaoImpl implements ProductDao {
         map.put("offset", offset);
         return jdbcTemplate.query(sql, map, new ProductRowMapper());
     }
+
+    @Override
+    public Integer countProducts(ProductQueryParams params) {
+        String sql = "SELECT count(*) FROM product WHERE 1=1";
+        Map<String, Object> map = new HashMap<>();
+
+        if (params.getProductCategory() != null) {
+            sql = sql + " AND category = :category";
+            map.put("category", params.getProductCategory().name());
+        }
+        if (params.getSearch() != null) {
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + params.getSearch() + "%");
+        }
+
+        return jdbcTemplate.queryForObject(sql, map, Integer.class);
+    }
 }

@@ -21,4 +21,6 @@ public interface ProductService {
     public void deleteProduct(Integer productId);
 
     public List<Product> getProducts(ProductQueryParams params);
+
+    Integer countProducts(ProductQueryParams params);
 }

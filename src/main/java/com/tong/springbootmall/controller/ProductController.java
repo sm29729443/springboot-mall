@@ -6,6 +6,7 @@ import com.tong.springbootmall.dto.ProductQueryParams;
 import com.tong.springbootmall.dto.ProductRequest;
 import com.tong.springbootmall.model.Product;
 import com.tong.springbootmall.service.ProductService;
+import com.tong.springbootmall.util.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -75,7 +76,7 @@ public class ProductController {
 
     //查詢商品列表
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             // 查詢條件 Filtering
             @RequestParam(required = false) ProductCategory productCategory,
             @RequestParam(required = false) String search,
@@ -98,7 +99,14 @@ public class ProductController {
         params.setOffset(offset);
         // 不用檢查 List 是否為空，教學是說與 Restful API對於 url 的資源定義有關，但我聽不太懂
         List<Product> products = productService.getProducts(params);
-        return ResponseEntity.status(HttpStatus.OK).body(products);
+        // 查詢商品總數
+        Integer total = productService.countProducts(params);
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(products);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
 
