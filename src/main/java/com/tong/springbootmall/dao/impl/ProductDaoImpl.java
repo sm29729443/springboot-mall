@@ -1,6 +1,5 @@
 package com.tong.springbootmall.dao.impl;
 
-import com.tong.springbootmall.constants.ProductCategory;
 import com.tong.springbootmall.dao.ProductDao;
 import com.tong.springbootmall.dto.ProductQueryParams;
 import com.tong.springbootmall.dto.ProductRequest;
@@ -11,10 +10,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.crypto.KeyGenerator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -96,9 +93,6 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public List<Product> getProducts(ProductQueryParams params) {
 
-        ProductCategory productCategory = params.getProductCategory();
-        String search = params.getSearch();
-
         String orderBy = params.getOrderBy();
         String sort = params.getSort();
 
@@ -108,15 +102,8 @@ public class ProductDaoImpl implements ProductDao {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, " +
                 "created_date, last_modified_date FROM product WHERE 1 = 1";
         Map<String, Object> map = new HashMap<>();
-        if (productCategory != null) {
-            sql = sql + " AND category = :category";
-            map.put("category", productCategory.name());
-        }
-
-        if (search != null) {
-            sql = sql + " AND product_name LIKE :search ";
-            map.put("search", "%" + search + "%");
-        }
+        // 查詢條件
+        sql = addFilteringSql(sql, map, params);
         // ORDER BY 不能使用動態語法，只能使用這種字串拼接的方式，教學說他也不知道為啥，
         // 可能是 JDBCTemplate 的技術限制之類的
         sql = sql + " ORDER BY " + orderBy + " " + sort;
@@ -132,7 +119,13 @@ public class ProductDaoImpl implements ProductDao {
     public Integer countProducts(ProductQueryParams params) {
         String sql = "SELECT count(*) FROM product WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
+        // 查詢條件
+        sql = addFilteringSql(sql, map, params);
 
+        return jdbcTemplate.queryForObject(sql, map, Integer.class);
+    }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams params) {
         if (params.getProductCategory() != null) {
             sql = sql + " AND category = :category";
             map.put("category", params.getProductCategory().name());
@@ -141,7 +134,6 @@ public class ProductDaoImpl implements ProductDao {
             sql = sql + " AND product_name LIKE :search";
             map.put("search", "%" + params.getSearch() + "%");
         }
-
-        return jdbcTemplate.queryForObject(sql, map, Integer.class);
+        return sql;
     }
 }

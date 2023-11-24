@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -27,6 +29,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@CrossOrigin
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -91,6 +94,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0") @Min(0) Integer offset
     ) {
         ProductQueryParams params = new ProductQueryParams();
+        
         params.setProductCategory(productCategory);
         params.setSearch(search);
         params.setOrderBy(orderBy);
