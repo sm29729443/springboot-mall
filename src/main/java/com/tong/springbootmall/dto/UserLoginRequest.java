@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Setter
 @Getter
-public class UserLoginRequset {
+public class UserLoginRequest {
     @NotBlank
     @Email
     private String email;

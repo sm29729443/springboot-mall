@@ -1,9 +1,8 @@
 package com.tong.springbootmall.service;
 
-import com.tong.springbootmall.dto.UserLoginRequset;
+import com.tong.springbootmall.dto.UserLoginRequest;
 import com.tong.springbootmall.dto.UserRegisterRequest;
 import com.tong.springbootmall.model.User;
-import org.springframework.stereotype.Service;
 
 /**
  * ClassName: UserService
@@ -15,5 +14,5 @@ public interface UserService {
 
     Integer register(UserRegisterRequest userRegisterRequest);
 
-    User login(UserLoginRequset userLoginRequset);
+    User login(UserLoginRequest userLoginRequset);
 }

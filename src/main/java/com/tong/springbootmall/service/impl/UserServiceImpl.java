@@ -1,7 +1,7 @@
 package com.tong.springbootmall.service.impl;
 
 import com.tong.springbootmall.dao.UserDao;
-import com.tong.springbootmall.dto.UserLoginRequset;
+import com.tong.springbootmall.dto.UserLoginRequest;
 import com.tong.springbootmall.dto.UserRegisterRequest;
 import com.tong.springbootmall.model.User;
 import com.tong.springbootmall.service.UserService;
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(UserLoginRequset userLoginRequest) {
+    public User login(UserLoginRequest userLoginRequest) {
         User user = userDao.getUserByEmail(userLoginRequest.getEmail());
         // 檢查 user 是否存在
         if (user == null) {

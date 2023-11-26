@@ -1,16 +1,18 @@
 package com.tong.springbootmall.controller;
 
-import com.tong.springbootmall.dto.UserLoginRequset;
+import com.tong.springbootmall.dto.UserLoginRequest;
 import com.tong.springbootmall.dto.UserRegisterRequest;
 import com.tong.springbootmall.model.User;
 import com.tong.springbootmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -32,8 +34,15 @@ public class UserController {
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequset userLoginRequset) {
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequset) {
         User user = userService.login(userLoginRequset);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
+
+    @GetMapping("/users/session")
+    public String sessionTest(HttpSession session) {
+        session.setAttribute("te",44);
+        return session.getId();
+    }
+
 }
