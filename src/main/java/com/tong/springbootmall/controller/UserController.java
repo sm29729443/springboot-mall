@@ -1,5 +1,6 @@
 package com.tong.springbootmall.controller;
 
+import com.tong.springbootmall.dto.UserLoginRequset;
 import com.tong.springbootmall.dto.UserRegisterRequest;
 import com.tong.springbootmall.model.User;
 import com.tong.springbootmall.service.UserService;
@@ -28,5 +29,11 @@ public class UserController {
         Integer userId = userService.register(userRegisterRequest);
         User user = userService.getUserById(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequset userLoginRequset) {
+        User user = userService.login(userLoginRequset);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }

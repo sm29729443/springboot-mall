@@ -1,6 +1,7 @@
 package com.tong.springbootmall.service.impl;
 
 import com.tong.springbootmall.dao.UserDao;
+import com.tong.springbootmall.dto.UserLoginRequset;
 import com.tong.springbootmall.dto.UserRegisterRequest;
 import com.tong.springbootmall.model.User;
 import com.tong.springbootmall.service.UserService;
@@ -35,6 +36,21 @@ public class UserServiceImpl implements UserService {
         }
         // 註冊帳號
         return userDao.createUser(userRegisterRequest);
+    }
+
+    @Override
+    public User login(UserLoginRequset userLoginRequset) {
+        User user = userDao.getUserByEmail(userLoginRequset.getEmail());
+        if (user == null) {
+            log.warn("該 email {} 並未註冊", userLoginRequset.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        if (user.getPassword().equals(userLoginRequset.getPassword())) {
+            return user;
+        } else {
+            log.warn("email {} 的 密碼不正確", userLoginRequset.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }
 
